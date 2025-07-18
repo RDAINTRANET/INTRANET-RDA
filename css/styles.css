@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+}
+nav {
+    background: #0078d7;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+nav a.active {
+    background: #005fa3;
+    border-radius: 4px;
+}
+main {
+    padding: 20px;
+}
+ul.folder-list {
+    list-style-type: none;
+    padding-left: 20px;
+}
+ul.folder-list li {
+    margin: 5px 0;
+}
+ul.folder-list li strong {
+    cursor: pointer;
+    color: #0078d7;
+}
+ul.folder-list li strong:hover {
+    text-decoration: underline;
+}
+ul.folder-list li a {
+    color: #333;
+    text-decoration: none;
+}
+ul.folder-list li a:hover {
+    text-decoration: underline;
+}

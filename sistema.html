@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet - Sistema de Gestión</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="dashboard.html">Inicio</a>
+        <a href="sistema.html" class="active">Sistema de Gestión y Calidad</a>
+        <a href="manuales.html">Manuales</a>
+        <button onclick="logout()">Cerrar Sesión</button>
+    </nav>
+    <main>
+        <h1>Sistema de Gestión y Calidad</h1>
+        <ul id="folderList" class="folder-list"></ul>
+    </main>
+    <script src="js/auth.js"></script>
+    <script>
+        async function loadFolders() {
+            const folderList = document.getElementById('folderList');
+            const rootPath = 'assets/pdfs/';
+
+            async function fetchDirectory(path, parentElement) {
+                try {
+                    const response = await fetch(path);
+                    const text = await response.text();
+                    const parser = new DOMParser();
+                    const htmlDoc = parser.parseFromString(text, 'text/html');
+                    const links = htmlDoc.querySelectorAll('a');
+
+                    links.forEach(link => {
+                        const name = link.textContent.trim();
+                        if (name !== '../') {
+                            const li = document.createElement('li');
+                            const fullPath = path + name;
+                            if (name.endsWith('/')) {
+                                li.innerHTML = `<strong>${name.slice(0, -1)}</strong>`;
+                                const ul = document.createElement('ul');
+                                li.appendChild(ul);
+                                fetchDirectory(fullPath, ul);
+                            } else if (name.toLowerCase().endsWith('.pdf')) {
+                                li.innerHTML = `<a href="${fullPath}" target="_blank">${name}</a>`;
+                            }
+                            parentElement.appendChild(li);
+                        }
+                    });
+                } catch (err) {
+                    console.error('Error loading folder:', path, err);
+                }
+            }
+
+            fetchDirectory(rootPath, folderList);
+        }
+
+        window.addEventListener('DOMContentLoaded', loadFolders);
+    </script>
+</body>
+</html>
